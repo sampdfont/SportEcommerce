@@ -125,7 +125,7 @@
             
           </ul>
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link text-white" href="checkout.html">Customer Support</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="customersupport.html">Customer Support</a></li>
           </ul>
         </div>
       </div>
@@ -203,6 +203,54 @@
       </ul>
     </div>
 
+    <script>
+      // Render cart items on the checkout page
+      function renderCart() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartContainer = document.getElementById('cart-container');
+        const totalContainer = document.getElementById('total-container');
+        let total = 0;
+    
+        cartContainer.innerHTML = ''; // Clear previous items
+        cart.forEach((item, index) => {
+          total += item.price * item.quantity;
+    
+          const cartItem = document.createElement('div');
+          cartItem.className = 'd-flex justify-content-between align-items-center mb-3';
+          cartItem.innerHTML = `
+            <div>
+              <h6 class="mb-0">${item.name} (x${item.quantity})</h6>
+              <small class="text-muted">$${item.price.toFixed(2)} each</small>
+            </div>
+            <button class="btn btn-sm btn-danger" onclick="removeFromCart(${index})">Remove</button>
+          `;
+    
+          cartContainer.appendChild(cartItem);
+        });
+    
+        totalContainer.textContent = `Total: $${total.toFixed(2)}`;
+      }
+    
+      // Remove an item from the cart
+      function removeFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1); // Remove the item at the specified index
+        localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+        renderCart(); // Re-render cart
+      }
+    
+      // Call renderCart on page load
+      document.addEventListener('DOMContentLoaded', renderCart);
+    </script>
+    
+
+
+
+
+
+
+
+
     
 <div class="container">
   <main>
@@ -212,7 +260,7 @@
 
     <div class="row g-5">
       <div class="col-md-5 col-lg-4 order-md-last">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <!--  old cart <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-primary">Your cart</span>
           <span class="badge bg-primary rounded-pill">1</span>
         </h4>
@@ -224,6 +272,8 @@
             </div>
             <span class="text-body-secondary">$149.99</span>
           </li>
+
+          
           
           
           <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
@@ -244,7 +294,7 @@
             <input type="text" class="form-control" placeholder="Promo code">
             <button type="menu" class="btn btn-secondary">Redeem</button>
           </div>
-        </form>
+        </form> -->
       </div>
       <div class="col-md-7 col-lg-8">
         <h4 class="mb-3">Billing address</h4>
@@ -424,6 +474,94 @@
           </div>
         </form>
       </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-primary">Your cart</span>
+              <span class="badge bg-primary rounded-pill" id="cart-count">0</span>
+            </h4>
+            <ul class="list-group mb-3" id="cart-container">
+              <!-- Cart items will be dynamically added here -->
+            </ul>
+      
+            <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+              <div class="text-success">
+                <h6 class="my-0">Promo code</h6>
+                <small>OTT24</small>
+              </div>
+              <span class="text-success">−$5</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (CAD)</span>
+              <strong id="total-container">$0.00</strong>
+            </li>
+      
+            <form class="card p-2 mt-3">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Promo code">
+                <button type="menu" class="btn btn-secondary">Redeem</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      
+
+      <!-- code pour script  du cart-->
+
+      <script>
+        function renderCart() {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const cartContainer = document.getElementById('cart-container');
+          const cartCount = document.getElementById('cart-count');
+          const totalContainer = document.getElementById('total-container');
+          let total = 0;
+      
+          // Clear previous items
+          cartContainer.innerHTML = '';
+      
+          // Render cart items
+          cart.forEach((item, index) => {
+            total += item.price * item.quantity;
+      
+            const cartItem = document.createElement('li');
+            cartItem.className = 'list-group-item d-flex justify-content-between lh-sm';
+            cartItem.innerHTML = `
+              <div>
+                <h6 class="my-0">${item.name} (x${item.quantity})</h6>
+                <small class="text-body-secondary">$${item.price.toFixed(2)} each</small>
+              </div>
+              <div>
+                <span class="text-body-secondary">$${(item.price * item.quantity).toFixed(2)}</span>
+                <button class="btn btn-sm btn-danger ms-2" onclick="removeFromCart(${index})">Remove</button>
+              </div>
+            `;
+      
+            cartContainer.appendChild(cartItem);
+          });
+      
+          // Update cart count and total
+          cartCount.textContent = cart.length;
+          totalContainer.textContent = `$${total.toFixed(2)}`;
+        }
+      
+        function removeFromCart(index) {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          cart.splice(index, 1); // Remove the item at the specified index
+          localStorage.setItem('cart', JSON.stringify(cart)); // Update localStorage
+          renderCart(); // Re-render cart
+        }
+      
+        document.addEventListener('DOMContentLoaded', renderCart);
+      </script>
+      
+      
+
+
+
     </div>
   </main>
 
